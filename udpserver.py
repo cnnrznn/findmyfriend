@@ -35,6 +35,7 @@ while True:
     data, addr = sock.recvfrom(256)
 
     # extract data from packet
+    data = data.split(',')
     reqid = data[2]
     reqlat = data[0]
     reqlon = data[1]
@@ -71,7 +72,6 @@ while True:
 
     # print information about request
     print "Packet from", addr
-    data = data.split(',')
     data[2] = struct.unpack(">I", data[2])[0]
     print "Data"
     for i in xrange(3):
