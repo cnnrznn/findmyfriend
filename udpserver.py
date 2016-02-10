@@ -8,6 +8,7 @@
 
 import socket
 import struct
+import sys
 
 ### FUNCTIONS ###
 
@@ -20,14 +21,16 @@ def construct_message(addr):
 
 ### SCRIPT ###
 
+
+
 _host = ""
 _port = 1234
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((_host, _port))
 
-channels = dict()
-addrs = dict()
+channels = dict()   # {}
+addrs = dict()      # 
 
 next_channel = 0
 
@@ -36,11 +39,11 @@ while True:
 
     # extract data from packet
     data = data.split(',')
-    reqid = data[2]
-    reqlat = data[0]
-    reqlon = data[1]
+    req_id = data[2]
+    req_lat = data[0]
+    req_lon = data[1]
 
-    if reqid < 0:
+    if req_id < 0:
         if addr in addrs:
             # resend assigned channel number
             sock.sendto(addrs[addr][0], addr)
@@ -54,7 +57,7 @@ while True:
         #sock.sendto("39.677501,-75.75207", addr)
         if addr in addrs:
             # respond with the other addr's location
-            possaddrs = channels[reqid]
+            possaddrs = channels[req_id]
             message = ""
             if addr == possaddrs[0]:
                 message = construct_message(possaddrs[1])
@@ -62,10 +65,11 @@ while True:
                 message = construct_message(possaddrs[0])
             sock.sendto(message, addr)
             # update this addr's location
-            addrs[addr][1] = reqlat
-            addrs[addr[2] = reqlon
+            addrs[addr][1] = req_lat
+            addrs[addr][2] = req_lon
         elif channels[reqid][1] == None:
             # TODO join this addr to the connection
+            pass
         else:
             # ignore request
             pass
@@ -77,7 +81,7 @@ while True:
     for i in xrange(3):
         print data[i]
 
-    print ""
+    print
 
     # DEBUG print dictionaries
     print channels
