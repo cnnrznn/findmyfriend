@@ -2,9 +2,6 @@
 
 # This is a simple udp server to support communication with
 # with the FindMyFriend application.
-#
-# Currently, it replies with the hard-coded coordinates of the
-# fountain on UD's south green.
 
 import socket
 import struct
