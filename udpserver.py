@@ -4,7 +4,6 @@
 # with the FindMyFriend application.
 
 import socket
-import struct
 import sys
 
 ### FUNCTIONS ###
@@ -18,16 +17,14 @@ def construct_message(addr):
 
 ### SCRIPT ###
 
-
-
 _host = ""
 _port = 1234
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((_host, _port))
 
-channels = dict()   # {}
-addrs = dict()      # 
+channels = dict()   # {chan_id, (dev_id1, dev_id2)}
+devs = dict()       # {dev_id, (chan_id, lat, lon)}
 
 next_channel = 0
 
@@ -36,11 +33,12 @@ while True:
 
     # extract data from packet
     data = data.split(',')
-    req_id = data[2]
-    req_lat = data[0]
-    req_lon = data[1]
+    req_id = int(data[0])
+    req_lat = float(data[1])
+    req_lon = float(data[2])
 
-    if req_id < 0:
+    """
+    if req_id < 0: # a request for id
         if addr in addrs:
             # resend assigned channel number
             sock.sendto(addrs[addr][0], addr)
@@ -79,7 +77,15 @@ while True:
         print data[i]
 
     print
+    """
+
+    print "Request from", addr
+    print "req_id:", req_id, type(req_id)
+    print "req_lat:", req_lat, type(req_lat)
+    print "req_lon:", req_lon, type(req_lon)
+    print
 
     # DEBUG print dictionaries
     print channels
-    print addrs
+    print devs
+    print
