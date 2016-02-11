@@ -18,10 +18,11 @@ def construct_message(addr):
 ### SCRIPT ###
 
 _host = ""
-_port = 1234
+_loc_port = 1234 # port for handling UDP location updates
+_inf_port = 1235 # port for handling TCP information exchange (device id, channel)
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind((_host, _port))
+loc_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+loc_sock.bind((_host, _loc_port))
 
 channels = dict()   # {chan_id, (dev_id1, dev_id2)}
 devs = dict()       # {dev_id, (chan_id, lat, lon)}
@@ -29,7 +30,7 @@ devs = dict()       # {dev_id, (chan_id, lat, lon)}
 next_channel = 0
 
 while True:
-    data, addr = sock.recvfrom(256)
+    data, addr = loc_sock.recvfrom(256)
 
     # extract data from packet
     data = data.split(',')
