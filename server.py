@@ -65,6 +65,12 @@ while True:
                         channels[chan_id][0] = channels[chan_id][1]
                     channels[chan_id][1] = None
 
+        print "next_device:", next_device
+        print "next_channel:", next_channel
+        print "devs:", devs
+        print "channels:", channels
+        print
+
         tmp_sock.close()
     except socket.timeout:
         # do nothing
