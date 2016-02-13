@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-# This is a simple udp server to support communication with
-# with the FindMyFriend application.
+# This is a simple server program to facilitate the communication
+# of the FindMyFriend application.
 
 import socket
 
