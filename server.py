@@ -37,6 +37,7 @@ channels = dict()   # {chan_id, (dev_id1, dev_id2)}
 devs = dict()       # {dev_id, (chan_id, lat, lon)}
 
 next_channel = 0
+next_device = 0
 
 while True:
     try:
