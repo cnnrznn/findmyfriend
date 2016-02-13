@@ -33,8 +33,8 @@ inf_sock.bind((_host, _inf_port))
 inf_sock.settimeout(0.01)
 inf_sock.listen(5)
 
-channels = dict()   # {chan_id, (dev_id1, dev_id2)}
-devs = dict()       # {dev_id, (chan_id, lat, lon)}
+channels = dict()   # {chan_id, [dev_id1, dev_id2]}
+devs = dict()       # {dev_id, [chan_id, lat, lon]}
 
 next_channel = 0
 next_device = 0
@@ -42,18 +42,28 @@ next_device = 0
 while True:
     try:
         tmp_sock, tmp_addr = inf_sock.accept()
-        data = int(tmp_sock.recv(1))
+        req = int(tmp_sock.recv(65).split(',')[0])
 
-        if data == _req_dev_id:
-            # TODO issue a device id
-            pass
-        elif data == _req_chan_id:
-            # TODO issue a channel id
-            pass
-        elif data == _req_disconnect:
-            # TODO free the device id and possibly
-            # the channel id
-            pass
+        if req == _req_dev_id:             # issue a device id
+            devs[next_device] = [-1, -1, -1]
+            tmp_sock.send(str(next_device) + ',')
+            next_device += 1
+        elif req == _req_chan_id:          # issue a channel id
+            dev_id = int(tmp_sock.recv(65).split(',')[0])
+            channels[next_channel] = [dev_id, None]
+            tmp_sock.send(str(next_channel) + ',')
+            next_channel += 1
+        elif req == _req_disconnect:       # free the device id and possibly the channel id
+            dev_id = int(tmp_sock.recv(65).split(',')[0])
+            chan_id = devs[dev_id][0]
+            del devs[dev_id]
+            if chan_id in channels:
+                if channels[chan_id][1] == None:    # this device is the last in the channel
+                    del channels[chan_id]
+                else:                               # this device is the first to leave
+                    if channels[chan_id][0] == dev_id:
+                        channels[chan_id][0] = channels[chan_id][1]
+                    channels[chan_id][1] = None
 
         tmp_sock.close()
     except socket.timeout:
