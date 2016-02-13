@@ -16,8 +16,8 @@ def construct_message(addr):
 
 ### SCRIPT ###
 
-_req_devid = -1
-_req_chanid = -2
+_req_dev_id = -1
+_req_chan_id = -2
 _req_disconnect = -3
 
 _host = ""
@@ -44,10 +44,10 @@ while True:
         tmp_sock, tmp_addr = inf_sock.accept()
         data = int(tmp_sock.recv(1))
 
-        if data == _req_devid:
+        if data == _req_dev_id:
             # TODO issue a device id
             pass
-        elif data == _req_chanid:
+        elif data == _req_chan_id:
             # TODO issue a channel id
             pass
         elif data == _req_disconnect:
@@ -65,9 +65,9 @@ while True:
 
         # extract data from packet
         data = data.split(',')
-        req_id = int(data[0])
-        req_lat = float(data[1])
-        req_lon = float(data[2])
+        dev_id = int(data[0])
+        lat = float(data[1])
+        lon = float(data[2])
 
         """
         if req_id < 0: # a request for id
@@ -112,9 +112,9 @@ while True:
         """
 
         print "Request from", addr
-        print "req_id:", req_id, type(req_id)
-        print "req_lat:", req_lat, type(req_lat)
-        print "req_lon:", req_lon, type(req_lon)
+        print "dev_id:", dev_id, type(dev_id)
+        print "lat:", lat, type(lat)
+        print "lon:", lon, type(lon)
         print
 
         # DEBUG print dictionaries
