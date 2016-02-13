@@ -17,6 +17,9 @@ def construct_message(addr):
 
 ### SCRIPT ###
 
+_reqdevid = -1
+_reqchanid = -2
+
 _host = ""
 _loc_port = 1234 # port for handling UDP location updates
 _inf_port = 1235 # port for handling TCP information exchange (device id, channel)
@@ -38,7 +41,16 @@ next_channel = 0
 while True:
     try:
         tmp_sock, tmp_addr = inf_sock.accept()
-        # TODO handle communication
+        data = int(tmp_sock.recv(1))
+
+        if data == _reqdevid:
+            # TODO issue a device id
+            pass
+        elif data == _reqchanid:
+            # TODO issue a channel id
+            pass
+
+        tmp_sock.close()
     except socket.timeout:
         # do nothing
         pass
