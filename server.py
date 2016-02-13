@@ -4,7 +4,6 @@
 # with the FindMyFriend application.
 
 import socket
-import sys
 
 ### FUNCTIONS ###
 
