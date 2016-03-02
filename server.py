@@ -51,12 +51,12 @@ while True:
 
         if req == _req_dev_id:             # issue a device id
             devs[next_device] = [-1, -1, -1]
-            tmp_sock.send(str(next_device) + ',')
+            tmp_sock.send(str(next_device) + ",")
             next_device += 1
         elif req == _req_chan_id:          # issue a channel id
-            dev_id = int(tmp_sock.recv(_inf_data_size).split(',')[0])
+            dev_id = int(tmp_sock.recv(_inf_data_size).split(",")[0])
             channels[next_channel] = [dev_id, None]
-            tmp_sock.send(str(next_channel) + ',')
+            tmp_sock.send(str(next_channel) + ",")
             next_channel += 1
         elif req == _req_disconnect:       # free the device id and possibly the channel id
             dev_id = int(tmp_sock.recv(_inf_data_size).split(',')[0])
@@ -82,7 +82,7 @@ while True:
         pass
 
     try:
-        data, addr = loc_sock.recvfrom(256)
+        data, tmp_addr = loc_sock.recvfrom(256)
 
         # extract data from packet
         data = data.split(',')
@@ -132,7 +132,7 @@ while True:
         print
         """
 
-        print "Request from", addr
+        print "Location from", addr
         print "dev_id:", dev_id, type(dev_id)
         print "lat:", lat, type(lat)
         print "lon:", lon, type(lon)
