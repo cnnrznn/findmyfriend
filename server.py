@@ -27,15 +27,17 @@ _host = ""
 _loc_port = 1234 # port for handling UDP location updates
 _inf_port = 1235 # port for handling TCP information exchange (device id, channel)
 
+# port for location data
 loc_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 loc_sock.bind((_host, _loc_port))
 loc_sock.settimeout(0.01)
+_loc_data_size = 195
 
+# port for information data
 inf_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 inf_sock.bind((_host, _inf_port))
 inf_sock.settimeout(0.01)
 inf_sock.listen(5)
-
 _inf_data_size = 65
 
 channels = dict()   # {chan_id, [dev_id1, dev_id2]}
@@ -82,7 +84,7 @@ while True:
         pass
 
     try:
-        data, tmp_addr = loc_sock.recvfrom(256)
+        data, tmp_addr = loc_sock.recvfrom(_loc_data_size)
 
         # extract data from packet
         data = data.split(',')
