@@ -16,6 +16,9 @@ def construct_message(addr):
 
 ### SCRIPT ###
 
+# TODO incorporate argparse
+# debugging flag (write to stderr)
+
 _req_dev_id = -1
 _req_chan_id = -2
 _req_disconnect = -3
