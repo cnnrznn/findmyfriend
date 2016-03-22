@@ -43,8 +43,8 @@ _inf_data_size = 65
 channels = dict()   # {chan_id, [dev_id1, dev_id2]}
 devs = dict()       # {dev_id, [chan_id, lat, lon]}
 
-next_channel = 0
-next_device = 0
+next_channel = 0 # TODO randomize
+next_device = 0 # TODO randomize
 
 while True:
     try:
@@ -54,12 +54,13 @@ while True:
         if req == _req_dev_id:             # issue a device id
             devs[next_device] = [-1, -1, -1]
             tmp_sock.send(str(next_device) + ",")
-            next_device += 1
+            next_device += 1 # TODO randomize
         elif req == _req_chan_id:          # issue a channel id
             dev_id = int(tmp_sock.recv(_inf_data_size).split(",")[0])
             channels[next_channel] = [dev_id, None]
+            devs[dev_id][0] = next_channel
             tmp_sock.send(str(next_channel) + ",")
-            next_channel += 1
+            next_channel += 1 # TODO randomize
         elif req == _req_disconnect:       # free the device id and possibly the channel id
             dev_id = int(tmp_sock.recv(_inf_data_size).split(',')[0])
             chan_id = devs[dev_id][0]
