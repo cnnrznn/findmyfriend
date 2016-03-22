@@ -49,6 +49,7 @@ next_device = 0 # TODO randomize
 while True:
     try:
         tmp_sock, tmp_addr = inf_sock.accept()
+        tmp_sock.setblocking(0) # so malicious app's don't 'stall' server
         req = int(tmp_sock.recv(_inf_data_size).split(',')[0])
 
         if req == _req_dev_id:             # issue a device id
